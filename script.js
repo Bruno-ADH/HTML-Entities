@@ -2238,9 +2238,11 @@ const entitiesTableBody = document.querySelector('#entities tbody');
 
 function displayEntities(filter = '') {
     entitiesTableBody.innerHTML = '';
+    let delay = 0
     Object.keys(data).forEach(key => {
         if (key.toLowerCase().includes(filter.toLowerCase())) {
             const row = document.createElement('tr');
+            row.style.setProperty('--delay', `${delay * 0.1}s`);
 
             const commandCell = document.createElement('td');
             commandCell.textContent = key;
@@ -2259,6 +2261,7 @@ function displayEntities(filter = '') {
             row.appendChild(codepointsCell);
 
             entitiesTableBody.appendChild(row);
+            delay+=0.2
         }
     });
 }
