@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HTML Entities Reference</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <h1>Références des Entités HTML</h1>
-  <input type="text" id="search" placeholder="Rechercher une entité...">
-  <table id="entities">
-    <thead>
-      <tr>
-        <th>Commande</th>
-        <th>Symbole</th>
-        <th>Codepoints</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
 
-  <script src="script.js" ></script>
+<body>
+  <div class="container">
+    <button id="toggle-theme">🌙 Mode sombre</button>
+
+    <h1>Références des Entités HTML</h1>
+    <input type="text" id="search" placeholder="Rechercher une entité...">
+    <table id="entities">
+      <thead>
+        <tr>
+          <th>Commande</th>
+          <th>Symbole</th>
+          <th>Codepoints</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <p id="no-results">🔍 Aucune entité trouvée</p>
+
+  </div>
+  <script src="script.js"></script>
 </body>
+
 </html>

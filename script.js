@@ -2233,36 +2233,62 @@ const data = {
     "&zwnj;": { "codepoints": [8204], "characters": "\u200C" }
 }
 
+const toggleThemeBtn = document.getElementById('toggle-theme');
 const searchInput = document.getElementById('search');
 const entitiesTableBody = document.querySelector('#entities tbody');
+const noResultsMessage = document.getElementById('no-results');
+const tbodyRow = document.querySelectorAll('#entities tbody tr')
+
+toggleThemeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    toggleThemeBtn.textContent = document.body.classList.contains('dark') ? '☀️ Mode clair' : '🌙 Mode sombre';
+  });
 
 function displayEntities(filter = '') {
     entitiesTableBody.innerHTML = '';
-    let delay = 0
-    Object.keys(data).forEach(key => {
-        if (key.toLowerCase().includes(filter.toLowerCase())) {
-            const row = document.createElement('tr');
-            row.style.setProperty('--delay', `${delay * 0.1}s`);
+    let delay = 0;
+    const filteredKeys = Object.keys(data).filter(key => key.toLowerCase().includes(filter.toLowerCase()));
 
-            const commandCell = document.createElement('td');
-            commandCell.textContent = key;
-            row.appendChild(commandCell);
+    if (filteredKeys.length === 0) {
+      noResultsMessage.style.display = 'block';
+    } else {
+      noResultsMessage.style.display = 'none';
+    }
 
-            const symbolCell = document.createElement('td');
-            symbolCell.textContent = data[key].characters;
-            row.appendChild(symbolCell);
+    filteredKeys.forEach(key => {
+        const row = document.createElement('tr');
+        row.style.setProperty('--delay', `${delay * 0.1}s`);
 
-            const codepointsCell = document.createElement('td');
-            const codepointText = data[key].characters
-                .split('')
-                .map(char => char.charCodeAt(0).toString(16))
-                .join(', ');
-            codepointsCell.textContent = codepointText;
-            row.appendChild(codepointsCell);
+        const commandCell = document.createElement('td');
+        commandCell.textContent = key;
+        commandCell.classList.add('copyable');
+        row.appendChild(commandCell);
 
-            entitiesTableBody.appendChild(row);
-            delay+=0.2
-        }
+        const symbolCell = document.createElement('td');
+        symbolCell.textContent = data[key].characters;
+        row.appendChild(symbolCell);
+
+        const codepointsCell = document.createElement('td');
+        const codepointText = data[key].characters
+            .split('')
+            .map(char => char.charCodeAt(0).toString(16))
+            .join(', ');
+        codepointsCell.textContent = codepointText;
+        codepointsCell.classList.add('copyable');
+        row.appendChild(codepointsCell);
+
+        row.addEventListener('click', (e) => {
+            if (e.target.classList.contains('copyable')) {
+              navigator.clipboard.writeText(e.target.textContent).then(() => {
+                alert(`Copié: ${e.target.textContent}`);
+              }).catch(err => {
+                console.error('Échec de la copie: ', err);
+              });
+            }
+        });
+
+        entitiesTableBody.appendChild(row);
+        delay+=0.2
     });
 }
 
@@ -2271,4 +2297,5 @@ displayEntities();
 searchInput.addEventListener('input', (e) => {
     displayEntities(e.target.value);
 });
+  
 
